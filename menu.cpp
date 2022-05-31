@@ -48,7 +48,7 @@ void optionsList(){
     completa del producto y su precio respectivo*/
 
 void displayMenu(){ 
-    int i = 0, maxFood = 6;
+    int i = 0, maxFood = 6;//msxFood innecesario puedo intentar con.Size()
     for(i = 0; i < maxFood; i++){
         cout << i + 1 << ".- " << foodName[i] << "............." << "$" << foodPrice[i] << endl;
     }
