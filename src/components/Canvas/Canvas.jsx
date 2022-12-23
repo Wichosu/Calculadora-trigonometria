@@ -1,13 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Canvas.scss';
 
-const Canvas = () => {
+const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
-  const [nodes, setNodes] = useState({});
-
-  const handleNode = (e) => {
-    setNodes(e);
-  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +31,7 @@ const Canvas = () => {
     return () => {
       window.removeEventListener('resize', responsiveCanvas);
     }
-  }, [handleNode]);
+  }, []);
 
   const draw = (e) => {
     const canvas = canvasRef.current;
