@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { 
+  add
+} from '../../redux/canvasSlice';
 import './Canvas.scss';
 
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,21 +38,20 @@ const Canvas = ({ mode }) => {
     }
   }, []);
 
-  const draw = (e) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.getBoundingClientRect();
+  // const draw = (e) => {
+  //   const canvas = canvasRef.current;
+  //   const ctx = canvas.getContext('2d');
+  //   const rect = canvas.getBoundingClientRect();
 
-
-    ctx.fillStyle = '#000000';
-    ctx.beginPath();
-    ctx.arc(e.pageX - rect.x, e.pageY - rect.y, 8, 0, 2 * Math.PI);
-    ctx.fill()
-  }
+  //   ctx.fillStyle = '#000000';
+  //   ctx.beginPath();
+  //   ctx.arc(e.pageX - rect.x, e.pageY - rect.y, 8, 0, 2 * Math.PI);
+  //   ctx.fill()
+  // }
 
   return (
     <div className='canvas'>
-      <canvas ref={canvasRef} onClick={draw} />
+      <canvas ref={canvasRef} onClick={(e) => dispatch(add({canvasRef, e}))} />
     </div>
   );
 }
