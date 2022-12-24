@@ -8,7 +8,6 @@ export const canvasSlice = createSlice({
   reducers: {
     add: (state, action) => {
       state.nodes.push(action.payload);
-      alert(JSON.stringify(state.nodes));
     },
     connect: (state, action) => {
       alert(JSON.stringify(state));

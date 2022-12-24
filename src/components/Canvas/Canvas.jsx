@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
   add,
   connect
@@ -8,6 +8,7 @@ import './Canvas.scss';
 
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
+  const nodes = useSelector((state) => state.canvas.nodes)
   const dispatch = useDispatch();
 
   const handleMode = (e) => {
@@ -16,7 +17,7 @@ const Canvas = ({ mode }) => {
         dispatch(add(createNode(e)));
         break;
       case 'connect':
-        dispatch(connect({canvas: canvasRef.current, e}));
+        connectNodes(e);
         break;
     }
   }
@@ -25,10 +26,28 @@ const Canvas = ({ mode }) => {
     const ctx = canvasRef.current.getContext('2d');
     const rect = canvasRef.current.getBoundingClientRect();
 
-    ctx.fillStyle = '#000000';
+    ctx.fillStyle = '#333333';
     ctx.beginPath();
     ctx.arc(e.pageX - rect.x, e.pageY - rect.y, 8, 0, 2 * Math.PI);
     ctx.fill()
+  }
+
+  const connectNodes = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const mouseX = e.pageX - rect.x;
+    const mouseY = e.pageY - rect.y;
+    const selected = nodes.filter((node) => {
+      const colliderXl = node.x - 8;
+      const colliderXr = node.x + 8;
+      const colliderYt = node.y + 8;
+      const colliderYb = node.y - 8;
+      
+      if(mouseX <= colliderXr 
+      && mouseX >= colliderXl
+      && mouseY <= colliderYt 
+      && mouseY >= colliderYb)
+      alert('click');
+    })
   }
   
   const createNode = (e) => {
