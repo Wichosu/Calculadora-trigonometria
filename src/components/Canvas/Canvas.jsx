@@ -8,8 +8,9 @@ import './Canvas.scss';
 
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
-  const nodes = useSelector((state) => state.canvas.nodes)
+  const nodes = useSelector((state) => state.canvas.nodes);
   const dispatch = useDispatch();
+  const [selected, setSelected] = useState([]);
 
   const handleMode = (e) => {
     switch(mode){
@@ -17,6 +18,7 @@ const Canvas = ({ mode }) => {
         dispatch(add(createNode(e)));
         break;
       case 'connect':
+        alert(JSON.stringify(selected));
         connectNodes(e);
         break;
     }
@@ -36,7 +38,7 @@ const Canvas = ({ mode }) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.pageX - rect.x;
     const mouseY = e.pageY - rect.y;
-    const selected = nodes.filter((node) => {
+    setSelected([...selected, nodes.filter((node) => {
       const colliderXl = node.x - 8;
       const colliderXr = node.x + 8;
       const colliderYt = node.y + 8;
@@ -46,8 +48,9 @@ const Canvas = ({ mode }) => {
       && mouseX >= colliderXl
       && mouseY <= colliderYt 
       && mouseY >= colliderYb)
-      alert('click');
-    })
+      return node;
+    })])
+    //remember to clean selected and detect clone nodes
   }
   
   const createNode = (e) => {
