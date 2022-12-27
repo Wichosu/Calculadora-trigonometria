@@ -19,7 +19,6 @@ const Canvas = ({ mode }) => {
         break;
       case 'connect':
         connectNodes(e);
-        alert(JSON.stringify(selected));
         break;
     }
   }
@@ -35,23 +34,32 @@ const Canvas = ({ mode }) => {
   }
 
   const connectNodes = (e) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const mouseX = e.pageX - rect.x;
-    const mouseY = e.pageY - rect.y;
-    nodes.filter((node => {
-      const colliderXl = node.x - 8;
-      const colliderXr = node.x + 8;
-      const colliderYt = node.y + 8;
-      const colliderYb = node.y - 8;
-      
-      if(mouseX <= colliderXr 
-      && mouseX >= colliderXl
-      && mouseY <= colliderYt 
-      && mouseY >= colliderYb) {
-        setSelected([...selected, node])
-      }
-    }));
-    //remember to clean selected and detect clone nodes
+    if(selected.length > 1) {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(selected[0].x, selected[0].y);
+      ctx.lineTo(selected[1].x, selected[1].y);
+      ctx.stroke();
+      console.log(selected[0])
+      setSelected([]);
+    } else {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const mouseX = e.pageX - rect.x;
+      const mouseY = e.pageY - rect.y;
+      nodes.filter((node => {
+        const colliderXl = node.x - 8;
+        const colliderXr = node.x + 8;
+        const colliderYt = node.y + 8;
+        const colliderYb = node.y - 8;
+        
+        if(mouseX <= colliderXr 
+        && mouseX >= colliderXl
+        && mouseY <= colliderYt 
+        && mouseY >= colliderYb) {
+          setSelected([...selected, node])
+        }
+      }));
+    }
   }
   
   const createNode = (e) => {
@@ -92,7 +100,42 @@ const Canvas = ({ mode }) => {
     return () => {
       window.removeEventListener('resize', responsiveCanvas);
     }
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    const responsiveCanvas = () => {
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      const backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+        ctx.mozBackingStorePixelRatio ||
+        ctx.msBackingStorePixelRatio ||
+        ctx.oBackingStorePixelRatio ||
+        ctx.backingStorePixelRatio || 1;
+      
+      const ratio = devicePixelRatio / backingStoreRatio;
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      canvas.style.width = canvas.offsetWidth + 'px';
+      canvas.style.height = canvas.offsetHeight + 'px';
+      ctx.scale(ratio, ratio);
+    }
+
+    if(selected.length > 1){
+      ctx.beginPath();
+      ctx.moveTo(selected[0].x, selected[0].y);
+      ctx.lineTo(selected[1].x, selected[1].y);
+      ctx.stroke();
+      setSelected([]);
+    }
+
+    window.addEventListener('resize', responsiveCanvas);
+
+    return () => {
+      window.removeEventListener('resize', responsiveCanvas);
+    }
+  }, [selected]);
 
   return (
     <div className='canvas'>
