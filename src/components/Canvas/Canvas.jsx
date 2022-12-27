@@ -18,8 +18,8 @@ const Canvas = ({ mode }) => {
         dispatch(add(createNode(e)));
         break;
       case 'connect':
-        alert(JSON.stringify(selected));
         connectNodes(e);
+        alert(JSON.stringify(selected));
         break;
     }
   }
@@ -38,7 +38,7 @@ const Canvas = ({ mode }) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.pageX - rect.x;
     const mouseY = e.pageY - rect.y;
-    setSelected([...selected, nodes.filter((node) => {
+    nodes.filter((node => {
       const colliderXl = node.x - 8;
       const colliderXr = node.x + 8;
       const colliderYt = node.y + 8;
@@ -47,9 +47,10 @@ const Canvas = ({ mode }) => {
       if(mouseX <= colliderXr 
       && mouseX >= colliderXl
       && mouseY <= colliderYt 
-      && mouseY >= colliderYb)
-      return node;
-    })])
+      && mouseY >= colliderYb) {
+        setSelected([...selected, node])
+      }
+    }));
     //remember to clean selected and detect clone nodes
   }
   
