@@ -6,6 +6,8 @@ import {
 } from '../../redux/canvasSlice';
 import './Canvas.scss';
 
+const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; //todo add the entire alphabet
+
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
   const nodes = useSelector((state) => state.canvas.nodes);
@@ -26,11 +28,15 @@ const Canvas = ({ mode }) => {
   const drawNode = (e) => {
     const ctx = canvasRef.current.getContext('2d');
     const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.pageX - rect.x;
+    const y = e.pageY - rect.y;
 
     ctx.fillStyle = '#333333';
     ctx.beginPath();
-    ctx.arc(e.pageX - rect.x, e.pageY - rect.y, 8, 0, 2 * Math.PI);
-    ctx.fill()
+    ctx.arc(x, y, 8, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.font = '16px serif';
+    ctx.fillText(letters[nodes.length], x - 25, y);// todo calculate the values according to the device width
   }
 
   const connectNodes = (e) => {
@@ -40,9 +46,9 @@ const Canvas = ({ mode }) => {
       ctx.moveTo(selected[0].x, selected[0].y);
       ctx.lineTo(selected[1].x, selected[1].y);
       ctx.stroke();
-      console.log(selected[0])
       setSelected([]);
     } else {
+      //filtrar selected para evitar nodos repetidos
       const rect = canvasRef.current.getBoundingClientRect();
       const mouseX = e.pageX - rect.x;
       const mouseY = e.pageY - rect.y;
