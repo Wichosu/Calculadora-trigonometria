@@ -8,9 +8,18 @@ const Results = () => {
   return (
     <div className='results'>
       <h2>Valores de tu trazo</h2>
-      {nodes.length > 1 &&
+      {nodes.length > 2 &&
         <>
-          <h3>Conexiones</h3>
+          <h3>Lados</h3>
+          {
+            nodes.map((node) => (
+              node.connections.map((connection, index) => (
+                <div key={index}>
+                  {node.name} - {connection.name}
+                </div>
+              ))
+            ))
+          }
           <h3>Angulos</h3>
         </>
       }
