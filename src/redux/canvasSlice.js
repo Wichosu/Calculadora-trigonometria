@@ -11,13 +11,8 @@ export const canvasSlice = createSlice({
       state.nodes.push(action.payload);
     },
     connect: (state, action) => {
-      //Filter connections
-      state.nodes.map((node) => {
-        if(node.name === action.payload[0].name){
-          node.connections.push({...action.payload[1], value: 0});
-        }
-      })
-      alert(JSON.stringify(state.nodes));
+      state.connections.push(action.payload);
+      alert(JSON.stringify(state.connections));
     }
   }
 });

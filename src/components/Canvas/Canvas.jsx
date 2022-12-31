@@ -7,11 +7,12 @@ import {
 import './Canvas.scss';
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'
-  , 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //todo add the entire alphabet
+  , 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; 
 
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
   const nodes = useSelector((state) => state.canvas.nodes);
+  const connections = useSelector((state) => state.canvas.connections);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState([]);
 
@@ -41,7 +42,6 @@ const Canvas = ({ mode }) => {
   }
 
   const connectNodes = (e) => {
-    //todo filtrar selected para evitar nodos repetidos
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.pageX - rect.x;
     const mouseY = e.pageY - rect.y;
@@ -68,6 +68,7 @@ const Canvas = ({ mode }) => {
 
     return {
       name: letters[nodes.length],
+      value: null,
       x: e.pageX - rect.x,
       y: e.pageY - rect.y
     }
@@ -107,11 +108,15 @@ const Canvas = ({ mode }) => {
     const ctx = canvas.getContext('2d');
 
     if(selected.length > 1){
-      ctx.beginPath();
-      ctx.moveTo(selected[0].x, selected[0].y);
-      ctx.lineTo(selected[1].x, selected[1].y);
-      ctx.stroke();
-      dispatch(connect(selected));
+      //todo sort connections.map to prevent palindromes for entering in state.canvas.connections
+      const temp = connections.map((connection) => JSON.stringify(connection) == JSON.stringify(selected));
+      if(!temp.includes(true)){
+        ctx.beginPath();
+        ctx.moveTo(selected[0].x, selected[0].y);
+        ctx.lineTo(selected[1].x, selected[1].y);
+        ctx.stroke();
+        dispatch(connect(selected));
+      }
       setSelected([]);
     }
   }, [selected]);
