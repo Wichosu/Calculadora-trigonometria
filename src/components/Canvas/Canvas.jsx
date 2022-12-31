@@ -6,7 +6,8 @@ import {
 } from '../../redux/canvasSlice';
 import './Canvas.scss';
 
-const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; //todo add the entire alphabet
+const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'
+  , 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //todo add the entire alphabet
 
 const Canvas = ({ mode }) => {
   const canvasRef = useRef(null);
@@ -40,7 +41,7 @@ const Canvas = ({ mode }) => {
   }
 
   const connectNodes = (e) => {
-    //filtrar selected para evitar nodos repetidos
+    //todo filtrar selected para evitar nodos repetidos
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.pageX - rect.x;
     const mouseY = e.pageY - rect.y;
@@ -67,7 +68,6 @@ const Canvas = ({ mode }) => {
 
     return {
       name: letters[nodes.length],
-      connections: [],
       x: e.pageX - rect.x,
       y: e.pageY - rect.y
     }
