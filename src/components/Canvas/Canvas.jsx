@@ -108,16 +108,24 @@ const Canvas = ({ mode }) => {
     const ctx = canvas.getContext('2d');
 
     if(selected.length > 1){
-      //todo sort connections.map to prevent palindromes for entering in state.canvas.connections
-      const temp = connections.map((connection) => JSON.stringify(connection) == JSON.stringify(selected));
-      if(!temp.includes(true)){
-        ctx.beginPath();
-        ctx.moveTo(selected[0].x, selected[0].y);
-        ctx.lineTo(selected[1].x, selected[1].y);
-        ctx.stroke();
-        dispatch(connect(selected));
+      if(selected[0] !== selected[1]){
+        const temp = connections.map((connection) => {
+          const con = JSON.stringify(connection);
+          const sel = JSON.stringify(selected);
+          const selReverse = JSON.stringify(selected.reverse());
+          return (con === sel || con === selReverse);
+        });
+        if(!temp.includes(true)){
+          ctx.beginPath();
+          ctx.moveTo(selected[0].x, selected[0].y);
+          ctx.lineTo(selected[1].x, selected[1].y);
+          ctx.stroke();
+          dispatch(connect(selected));
+        }
+        setSelected([]);
+      } else {
+        setSelected([selected[0]]);
       }
-      setSelected([]);
     }
   }, [selected]);
 
