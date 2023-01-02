@@ -68,7 +68,6 @@ const Canvas = ({ mode }) => {
 
     return {
       name: letters[nodes.length],
-      value: null,
       x: e.pageX - rect.x,
       y: e.pageY - rect.y
     }

@@ -12,7 +12,6 @@ export const canvasSlice = createSlice({
     },
     connect: (state, action) => {
       state.connections.push(action.payload);
-      alert(JSON.stringify(state.connections));
     }
   }
 });

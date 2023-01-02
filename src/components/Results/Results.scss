@@ -1,0 +1,37 @@
+@use '../Colors.scss' as *;
+
+.results{
+  width: 80vw;
+  margin: 1.5rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem 0;
+
+  button{
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    align-self: flex-end;
+  }
+
+  .sides{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+
+    .container{
+      display: flex;
+      flex-direction: column;
+      gap: 1rem 0;
+
+      h4{
+        font-weight: 500;
+      }
+
+      input{
+        border: none;
+        border-bottom: 1px solid $orange-200;
+        outline: none;
+      }
+    }
+  }
+}
