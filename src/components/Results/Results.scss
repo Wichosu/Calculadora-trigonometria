@@ -29,8 +29,12 @@
 
       input{
         border: none;
-        border-bottom: 1px solid $orange-200;
+        border-bottom: 1px solid $blue-200;
         outline: none;
+
+        &::placeholder{
+          color: $orange-800;
+        }
       }
     }
   }

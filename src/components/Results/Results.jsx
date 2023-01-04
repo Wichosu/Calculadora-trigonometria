@@ -6,22 +6,21 @@ const Results = () => {
 
   const nodes = useSelector((state) => state.canvas.nodes);
   const connections = useSelector((state) => state.canvas.connections);
-  console.log(connections)
 
   return (
     <div className='results'>
       {connections.length > 0 &&
         <>
-        <h2>Valores de tu trazo</h2>
+          <h2>Valores de tu trazo</h2>
           <h3>Lados</h3>
           <div className='sides'>
             {
               connections.map((connection, index) => (
                 <div key={index} className='container'>
-                  <h4 key={index}>
-                    {connection[0].name} - {connection[1].name}
+                  <h4>
+                    {connection.name}
                   </h4>
-                  <input type='text' />
+                  <input type='text' placeholder={connection.value} />
                 </div>
               ))
             }
